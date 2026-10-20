@@ -1,0 +1,32 @@
+%% 泳道图起手模板：复制后替换泳道名、节点与连边
+%% 规则速记：ID 用 ASCII；判断用 {}；起止用 ([]);异常用虚线 -.->；主干用实线 -->
+flowchart TD
+    Start(["流程触发"]) --> A1
+
+    subgraph L1["角色 A"]
+        direction LR
+        A1["动作一"]
+        A2["动作二"]
+    end
+
+    subgraph L2["角色 B"]
+        direction LR
+        B1{"判断条件?"}
+        B2["处理动作"]
+    end
+
+    A1 --> B1
+    B1 -->|"是"| B2
+    B1 -.->|"否 / 超时"| E1(["流程终止"])
+    B2 --> Finish(["流程结束"])
+
+    classDef start fill:#E9F9EF,stroke:#10B981,color:#065F46
+    classDef role fill:#EAF2FF,stroke:#3B82F6,color:#1E3A8A
+    classDef sys fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    classDef warn fill:#FFF4E5,stroke:#F59E0B,color:#92400E
+    classDef risk fill:#FDECEC,stroke:#EF4444,color:#991B1B
+
+    class Start,Finish start
+    class A1,A2,B2 role
+    class B1 warn
+    class E1 risk

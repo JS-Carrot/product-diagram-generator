@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品流程图生成器 · 操作手册</title>
+<style>
+  :root{
+    --ink:#1F2430; --sub:#5B6472; --line:#E3E7EE; --bg:#F6F7FA;
+    --blue:#2F6BFF; --blue-deep:#1E3A8A; --amber:#B45309; --green:#0F9960; --red:#C53030;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+       color:var(--ink);background:var(--bg);line-height:1.75;font-size:15px}
+  .page{max-width:1060px;margin:0 auto;padding:40px 32px 80px;display:grid;
+        grid-template-columns:200px 1fr;gap:40px}
+  /* ---------- 目录 ---------- */
+  nav{position:sticky;top:32px;align-self:start;font-size:13px}
+  nav .t{font-weight:700;margin-bottom:10px;color:var(--sub);letter-spacing:2px}
+  nav a{display:block;color:var(--sub);text-decoration:none;padding:5px 10px;
+        border-left:2px solid transparent;border-radius:0 6px 6px 0}
+  nav a:hover{color:var(--blue);background:#fff}
+  nav a.on{color:var(--blue);border-left-color:var(--blue);background:#fff;font-weight:600}
+  /* ---------- 正文 ---------- */
+  main{min-width:0}
+  .cover{background:linear-gradient(135deg,#10141C 0%,#1C2A4A 100%);color:#fff;
+         border-radius:16px;padding:44px 40px 38px;margin-bottom:34px}
+  .cover .kicker{font-size:12px;letter-spacing:3px;color:#8FB0FF;margin-bottom:10px}
+  .cover h1{font-size:32px;line-height:1.3;margin-bottom:12px}
+  .cover p{color:#C4CEE0;font-size:14px;max-width:640px}
+  .cover .meta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+  .cover .meta span{font-size:12px;background:rgba(255,255,255,.12);
+                    border:1px solid rgba(255,255,255,.18);padding:3px 12px;border-radius:99px}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;
+          padding:30px 34px;margin-bottom:26px}
+  h2{font-size:21px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .no{font-size:12px;font-weight:700;color:#fff;background:var(--blue);
+         width:24px;height:24px;border-radius:7px;display:inline-flex;
+         align-items:center;justify-content:center;flex:none}
+  h3{font-size:15.5px;margin:22px 0 8px}
+  section > p{color:var(--sub)}
+  p + p{margin-top:8px}
+  strong{color:var(--ink)}
+  ul,ol{padding-left:22px;color:var(--sub)}
+  li + li{margin-top:4px}
+  li strong{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  th{background:#F2F5FA;text-align:left;font-weight:600}
+  th,td{border:1px solid var(--line);padding:8px 12px;vertical-align:top}
+  td{color:var(--sub)}
+  td:first-child{white-space:nowrap;color:var(--ink)}
+  code{background:#F0F3F8;border:1px solid #E2E8F2;border-radius:5px;
+       padding:1px 6px;font-size:12.5px;font-family:"SF Mono",Consolas,monospace;color:#244}
+  .cmd{background:#1C1F26;color:#DDE3EE;border-radius:10px;padding:14px 16px;
+       margin:12px 0;font-size:13px;line-height:1.7;overflow-x:auto;
+       font-family:"SF Mono",Consolas,monospace}
+  .cmd .c{color:#7C8899}
+  .note{background:#F0F6FF;border:1px solid #CFE0FF;border-radius:10px;
+        padding:12px 16px;font-size:13.5px;color:#2B4C7E;margin:12px 0}
+  .warn{background:#FFF7ED;border:1px solid #FCD9A8;border-radius:10px;
+        padding:12px 16px;font-size:13.5px;color:var(--amber);margin:12px 0}
+  .tw{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  .tw .card{border-radius:10px;padding:14px 16px;font-size:13.5px}
+  .tw .good{background:#F0FBF5;border:1px solid #BCE5CD}
+  .tw .bad{background:#FDF3F3;border:1px solid #F3C6C6}
+  .tw .card b{display:block;margin-bottom:6px;font-size:13px}
+  .tw .good b{color:var(--green)} .tw .bad b{color:var(--red)}
+  .tw .card p{color:var(--sub);font-size:13px}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:14px 0}
+  .flow .st{background:#F4F6FB;border:1px solid var(--line);border-radius:9px;
+            padding:8px 12px;font-size:12.5px;min-width:104px}
+  .flow .st b{display:block;font-size:12px;color:var(--blue-deep)}
+  .flow .st span{color:var(--sub);font-size:11.5px;line-height:1.5;display:block;margin-top:2px}
+  .flow .ar{align-self:center;color:#B6BEC9;font-weight:700}
+  .flow .gate{background:#FFF7ED;border-color:#FCD9A8}
+  .flow .gate b{color:var(--amber)}
+  .cheat{background:#16181D;color:#D7DEE9;border-radius:14px;padding:26px 30px;font-size:13.5px}
+  .cheat h2{color:#fff;margin-bottom:14px}
+  .cheat h2 .no{background:#3D8BFF}
+  .cheat table{border-color:#2A2F3A;font-size:12.5px}
+  .cheat th{background:#22262F;color:#AEB9C8;border-color:#2A2F3A}
+  .cheat td{border-color:#2A2F3A;color:#C9D2DE}
+  .cheat td:first-child{color:#fff}
+  .cheat code{background:#22262F;border-color:#2A2F3A;color:#8FB0FF}
+  .copy{margin:14px 0 0;font-size:12px;color:var(--sub)}
+  footer{color:#9AA3B0;font-size:12px;text-align:center;margin-top:10px}
+  @media (max-width:900px){
+    .page{grid-template-columns:1fr;padding:20px 16px 60px}
+    nav{position:static;display:none}
+    .tw{grid-template-columns:1fr}
+  }
+  /* ---------- 打印 ---------- */
+  @page{size:A4;margin:14mm 13mm}
+  @media print{
+    body{background:#fff;font-size:10.5pt;line-height:1.65}
+    .page{display:block;max-width:none;padding:0}
+    nav,.copy{display:none!important}
+    .cover{padding:0 0 22px;border-bottom:1px solid #ddd;border-radius:0;
+           background:#fff!important;color:var(--ink)}
+    .cover h1{font-size:26pt;color:var(--ink)}
+    .cover .kicker{color:var(--blue)}
+    .cover p{color:var(--sub)}
+    .cover .meta span{background:#F2F5FA;border-color:var(--line);color:var(--sub)}
+    main{padding-top:22px}
+    section{border:none;border-radius:0;padding:0 0 6px;margin-bottom:22px;
+            border-bottom:1px solid var(--line)}
+    h2{font-size:16pt;page-break-after:avoid}
+    h3{font-size:12pt;page-break-after:avoid}
+    .flow,.note,.warn,.tw .card,.cmd,figure{page-break-inside:avoid}
+    #s9{page-break-inside:avoid}
+    .cheat{padding:20px 24px}
+    .cmd{background:#1C1F26!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cheat{background:#16181D!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    table{font-size:9pt}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<nav id="toc">
+  <div class="t">目录</div>
+  <a href="#s1">1 · 这个技能做什么</a>
+  <a href="#s2">2 · 安装（5 种方式）</a>
+  <a href="#s3">3 · 怎么提需求</a>
+  <a href="#s4">4 · 触发说法</a>
+  <a href="#s5">5 · 七阶段与三个卡点</a>
+  <a href="#s6">6 · 交付物怎么用</a>
+  <a href="#s7">7 · 迭代话术</a>
+  <a href="#s8">8 · 常见问题</a>
+  <a href="#s9">9 · 速查卡</a>
+</nav>
+
+<main>
+<div class="cover">
+  <div class="kicker">PRODUCT DIAGRAM GENERATOR · 操作手册</div>
+  <h1>产品流程图生成器<br>给产品经理的使用说明</h1>
+  <p>把一句需求压成一张评审会上讲得透的图：跨角色泳道流程图、分层架构图，输出
+     Mermaid 源码、分层说明和可拖拽的 draw.io 矢量文件——结构经过校验，连线不会穿框压线。</p>
+  <div class="meta">
+    <span>version 1.0</span><span>Mermaid + draw.io 双出口</span><span>MIT License</span>
+    <span>github.com/JS-Carrot/product-diagram-generator</span>
+  </div>
+</div>
+
+<!-- ============================== 1 ============================== -->
+<section id="s1">
+  <h2><span class="no">1</span>这个技能做什么</h2>
+  <p>你用一段话描述业务流程或产品架构，它产出<strong>一组可以直接进评审、进文档、进 Wiki 的图</strong>：</p>
+  <table>
+    <tr><th>图型</th><th>典型用途</th><th>输出</th></tr>
+    <tr><td>跨角色泳道流程图</td><td>业务链路评审、跨团队对齐职责边界</td><td rowspan="5">Mermaid 源码<br>+ 分层说明文档<br>+ draw.io 矢量文件（可拖拽修改）</td></tr>
+    <tr><td>主干流程图</td><td>单条任务链、操作指引</td></tr>
+    <tr><td>状态机图</td><td>订单 / 设备 / 工单的状态流转</td></tr>
+    <tr><td>时序图</td><td>系统间调用、接口交互</td></tr>
+    <tr><td>分层架构图</td><td>产品功能架构、技术方案评审</td></tr>
+  </table>
+  <p>它和「画个图」的普通请求有三点不同：</p>
+  <ul>
+    <li><strong>先问清再画</strong>：动笔前会确认角色清单、主干步骤、每条异常的出口，不会拿半截需求猜着画；</li>
+    <li><strong>异常必须闭合</strong>：每条异常分支都要有归宿（回流某一步，或明确终止），不允许出现「处理中」这种断头路；</li>
+    <li><strong>交付前机器校验</strong>：Mermaid 语法、draw.io 结构、连线穿框、连边交叉都跑自动检查，检查不过不算交付。</li>
+  </ul>
+</section>
+
+<!-- ============================== 2 ============================== -->
+<section id="s2">
+  <h2><span class="no">2</span>安装（5 种方式）</h2>
+  <p>技能本体是一个文件夹，放进 AI 助手扫描的技能目录即可。按你的情况选一种：</p>
+  <h3>方式 A · 让 AI 帮你装（推荐，大多数人用这个）</h3>
+  <p>把下面这段话发给你的 AI 助手：</p>
+  <div class="cmd">帮我安装 GitHub 上的技能：https://github.com/JS-Carrot/product-diagram-generator<br>装到用户级技能目录，装完告诉我怎么用</div>
+  <h3>方式 B · 命令行安装</h3>
+  <p>仓库根目录就是技能本体，直接克隆到技能目录、名字对上即可，一条命令：</p>
+  <div class="cmd">git clone https://github.com/JS-Carrot/product-diagram-generator.git<br>~/.workbuddy/skills/product-diagram-generator</div>
+  <h3>方式 C · 项目级安装（团队共用）</h3>
+  <p>把 <code>product-diagram-generator</code> 文件夹放进项目的 <code>.workbuddy/skills/</code> 目录并提交进仓库，
+     团队成员拉下代码即人手一份，风格统一。</p>
+  <h3>方式 D · ZIP 下载（公司网络挡 git 时）</h3>
+  <p>仓库页点 <code>Code → Download ZIP</code>，解压后把 <code>product-diagram-generator</code>
+     文件夹整个拖进 <code>~/.workbuddy/skills/</code>。仓库根就是技能根，拖进去这一层就对了。</p>
+  <h3>方式 E · 免安装试用</h3>
+  <p>打开仓库里的 <code>SKILL.md</code>，全文复制发给 AI：「按这份技能的规则帮我画图」——先试效果再决定装不装。</p>
+
+  <h3>装完 30 秒自检</h3>
+  <p>新开一个对话，说：<strong>「画个泳道图」</strong>。</p>
+  <ul>
+    <li>它先反问你<strong>角色清单、主干步骤、异常分支</strong>——装对了 ✓</li>
+    <li>它直接开始编页面内容、或当成普通画图请求——没装对 ✗，回到方式 A 重装</li>
+  </ul>
+  <div class="note">技能清单在新对话开始时加载，刚装完<strong>必须新开一个对话</strong>才能生效。</div>
+</section>
+
+<!-- ============================== 3 ============================== -->
+<section id="s3">
+  <h2><span class="no">3</span>怎么提需求</h2>
+  <p>好图来自好输入。提需求时把<strong>三要素</strong>说全：</p>
+  <div class="cmd">画一张【业务场景】的跨角色泳道流程图。<br>角色：角色 A、角色 B、角色 C、平台系统<br>主干：步骤 1 → 步骤 2 → 步骤 3 → …（正常情况怎么走）<br>异常：①什么条件下出什么岔子，谁处理，结果如何<br>　　　②……<br>输出：Mermaid 源码 + 分层说明 + 可拖拽的 .drawio</div>
+  <div class="tw">
+    <div class="card good"><b>✓ 够用的需求</b>
+      <p>画一张【设备换机与旧机回收】泳道图。角色：客户、运维、物流承运商、平台系统。
+         主干：申请 → 出库 → 签收 → 寄回 → 检测 → 擦除确认 → 关单。
+         异常：①库存缺货，客户可接受替代或取消；②签收后 7 天未寄回按日计逾期费；③检测不合格转维修工单，4 小时未响应升级业务负责人。</p>
+    </div>
+    <div class="card bad"><b>✗ 不够用的需求</b>
+      <p>画一个设备租赁的流程图。<br>
+      <em>缺角色、缺主干步骤、缺异常出口——AI 只能编。编出来的图评审会上第一个被挑战的就是「这条异常线去哪了」。</em></p>
+    </div>
+  </div>
+  <p>说不全也没关系：它会在 Stage 1 把缺的列出来逐项问你，<strong>你补一句它补一步</strong>，拼图式把需求凑齐。</p>
+</section>
+
+<!-- ============================== 4 ============================== -->
+<section id="s4">
+  <h2><span class="no">4</span>触发说法</h2>
+  <table>
+    <tr><th>方式</th><th>示例</th></tr>
+    <tr><td>自然描述</td><td>「把我们的退款流程梳理成一张图，拉通客服、仓库、财务三个角色」</td></tr>
+    <tr><td>带触发词</td><td>说「画<strong>泳道图</strong>」「画<strong>流程图</strong>」「画<strong>状态机</strong>」「画<strong>时序图</strong>」「画<strong>架构图</strong>」「分层<strong>架构图</strong>」</td></tr>
+    <tr><td>直接点名</td><td>「用 product-diagram-generator 画……」</td></tr>
+  </table>
+  <div class="warn">要「架构图」时如果说「画个系统架构」，可能触发别的画图技能；点名
+     <strong>「产品功能架构图 / 分层架构图」</strong>更稳。</div>
+</section>
+
+<!-- ============================== 5 ============================== -->
+<section id="s5">
+  <h2><span class="no">5</span>七个阶段与三个卡点</h2>
+  <p>全程自动推进，但<strong>三个卡点会停下来等你确认</strong>——该你说话的时候别划走：</p>
+  <div class="flow">
+    <div class="st"><b>Stage 1</b>结构抽取<span>角色/主干/异常清单</span></div>
+    <div class="ar">→</div>
+    <div class="st gate"><b>G1 卡点</b>结构确认<span>清单对不对，你说了算</span></div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 2</b>图型选型</div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 3</b>Mermaid 源码</div>
+    <div class="ar">→</div>
+    <div class="st gate"><b>G2 卡点</b>异常闭合<span>每条异常都有出口</span></div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 4</b>分层说明</div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 5</b>drawio 出口<span>按需生成</span></div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 6</b>校验<span>语法+结构+几何</span></div>
+    <div class="ar">→</div>
+    <div class="st gate"><b>G3 卡点</b>校验通过<span>全绿才交付</span></div>
+    <div class="ar">→</div>
+    <div class="st"><b>Stage 7</b>交付</div>
+  </div>
+  <table>
+    <tr><th>卡点</th><th>它问什么</th><th>你怎么答最省事</th></tr>
+    <tr><td>G1 结构确认</td><td>角色清单、主干步骤、异常清单对不对？</td><td>直接改清单：「把审批人换成财务」「补一条超时异常」</td></tr>
+    <tr><td>G2 异常闭合</td><td>每条异常落到图上了吗？出口在哪？</td><td>逐条说归宿：「这个回流到出库」「这个终止」</td></tr>
+    <tr><td>G3 校验通过</td><td>校验报告 + 渲染预览给你看</td><td>有不顺眼直接指：「这条线绕太远」「这两个框太近」</td></tr>
+  </table>
+</section>
+
+<!-- ============================== 6 ============================== -->
+<section id="s6">
+  <h2><span class="no">6</span>交付物怎么用</h2>
+  <h3>Mermaid 源码</h3>
+  <p>贴到任何支持 Mermaid 的地方直接渲染：GitHub / GitLab 的 Markdown、语雀、Notion、Typora、
+     <code>mermaid.live</code>。适合放进 PRD 和 Wiki，随文档版本走。</p>
+  <h3>draw.io 矢量文件（.drawio）</h3>
+  <ul>
+    <li><strong>draw.io 桌面版</strong>：双击直接打开，节点可拖拽精修；</li>
+    <li><strong>网页版</strong>：打开 <code>app.diagrams.net</code> 把文件拖进去；</li>
+    <li><strong>Obsidian</strong>：装 draw.io Integration 插件后双击预览。</li>
+  </ul>
+  <p>连线都写了显式锚点，draw.io 里打开的走线和预览一致，不会自动乱跑。
+     文件是标准 mxGraph XML，能提交进 Git 做版本管理和评审留痕。</p>
+  <h3>校验脚本（可选，开发向）</h3>
+  <div class="cmd">python3 scripts/check_mermaid.py 图文件.md<span class="c">        # Mermaid 语法与结构校验</span><br>python3 scripts/check_drawio.py 图文件.drawio --preview<span class="c">   # 结构+连线几何校验，渲染 SVG 预览</span></div>
+  <p>校验含两条硬规则：<strong>连线不得穿过无关节点</strong>、<strong>两条边不得内部交叉</strong>——
+     这两条不过关会直接报错，从机制上杜绝「箭头指到空处」和「连线竖穿节点」。</p>
+</section>
+
+<!-- ============================== 7 ============================== -->
+<section id="s7">
+  <h2><span class="no">7</span>迭代话术</h2>
+  <p>图是改出来的。直接说改哪、怎么改：</p>
+  <table>
+    <tr><th>想改什么</th><th>可以直接说</th></tr>
+    <tr><td>加/删节点</td><td>「在检测后面加一道复检」「把财务审批从主干拿掉」</td></tr>
+    <tr><td>改分支</td><td>「缺货时客户也可能直接退款，补一条分支指向终止」</td></tr>
+    <tr><td>改布局</td><td>「这两列挨太近」「这条线从上面绕」「这个节点挪到物流泳道」</td></tr>
+    <tr><td>换图型</td><td>「这张改成状态机视角」「再出一张分层架构图」</td></tr>
+    <tr><td>改口径</td><td>「角色名改成正式组织名」「异常线统一用红色虚线」</td></tr>
+  </table>
+  <p>改完它会重新跑校验再交付，不会改一处坏一处。</p>
+</section>
+
+<!-- ============================== 8 ============================== -->
+<section id="s8">
+  <h2><span class="no">8</span>常见问题</h2>
+  <h3>装好了但说「画泳道图」没反应？</h3>
+  <p>九成是没新开对话——技能清单在会话开始时加载。新开对话再试；仍不行就把
+     <code>SKILL.md</code> 全文贴给它（方式 E）先跑通。</p>
+  <h3>它画的图和我脑中的流程不一样？</h3>
+  <p>说明 Stage 1 的清单你没逐条确认。在 G1 卡点把三份清单（角色 / 主干 / 异常）
+     逐行核对，图只是清单的投影——清单对了图就对了。</p>
+  <h3>异常分支被它「糊」过去怎么办？</h3>
+  <p>它被要求每条异常必须有出口。如果你发现某条异常线没有归宿，直接在 G2 卡点点名：
+     「这条超时线现在没有出口，明确它回流到哪一步或终止」。</p>
+  <h3>draw.io 打开后布局和预览不一致？</h3>
+  <p>预览是近似渲染。所有连线已写显式锚点，正常情况完全一致；如个别边在 draw.io 里
+     自动路由偏了，把该边补上固定折点，或手动拖一下——矢量文件本来就是留给你精修的。</p>
+  <h3>能直接出 Visio / PPT 吗？</h3>
+  <p>draw.io 支持「文件 → 导出为 → VSDX / PNG / SVG / PDF」，从 .drawio 一步导出即可，
+     不需要本技能额外支持。</p>
+  <h3>同一张图能给不同的人看不同版本吗？</h3>
+  <p>用迭代话术生成「管理层版」（只留主干）和「执行版」（含全部异常），两份文件分开交付，
+     各自可维护。</p>
+</section>
+
+<!-- ============================== 9 ============================== -->
+<section id="s9" style="padding:0;border:none;background:none">
+  <div class="cheat">
+    <h2><span class="no">9</span>速查卡（截图存手机）</h2>
+    <table>
+      <tr><th>场景</th><th>一句话</th></tr>
+      <tr><td>装技能</td><td>把仓库地址发给 AI：「安装其中的 product-diagram-generator」</td></tr>
+      <tr><td>画泳道图</td><td>「画【场景】泳道图，角色：A/B/C/系统，主干：1→2→3，异常：①②③」</td></tr>
+      <tr><td>画架构图</td><td>「画【系统名】分层架构图，分层：触点层/应用层/核心域/集成层/数据层」</td></tr>
+      <tr><td>G1 卡点</td><td>「角色对，主干加一步 X，异常补一条 Y」</td></tr>
+      <tr><td>G2 卡点</td><td>「这条异常回流到第 N 步 / 终止」</td></tr>
+      <tr><td>G3 卡点</td><td>「这条线绕太远 / 两个框太近，调一下」</td></tr>
+      <tr><td>改图</td><td>「在 X 后加 Y」「把 A 挪到 B 泳道」「换成状态机视角」</td></tr>
+      <tr><td>打开 drawio</td><td>双击（桌面版）/ 拖进 app.diagrams.net（网页版）</td></tr>
+      <tr><td>进文档</td><td>Mermaid 源码贴 GitHub / 语雀 / Notion 直接渲染</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>产品流程图生成器 · product-diagram-generator · MIT License · JS-Carrot</footer>
+</main>
+</div>
+
+<script>
+// 目录高亮
+const links = document.querySelectorAll('#toc a');
+const secs = [...document.querySelectorAll('section[id]')];
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, {rootMargin: '-20% 0px -70% 0px'});
+secs.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

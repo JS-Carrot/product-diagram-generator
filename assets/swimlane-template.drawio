@@ -1,0 +1,30 @@
+<mxfile host="app.diagrams.net" agent="product-diagram-generator" version="24.0.0" type="device">
+  <diagram id="swimlane-tpl" name="泳道图模板">
+    <mxGraphModel dx="1000" dy="558" grid="1" gridSize="10" guides="1" tooltips="1"
+                  connect="1" arrows="1" fold="1" page="1" pageScale="1"
+                  pageWidth="1000" pageHeight="558" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+                <mxCell id="laneA" value="角色 A" style="swimlane;horizontal=1;startSize=90;fillColor=#EAF2FF;strokeColor=#3B82F6;fontColor=#1E3A8A;fontStyle=1;fontSize=13;" vertex="1" parent="1"><mxGeometry x="40" y="60" width="900" height="130" as="geometry" /></mxCell>
+        <mxCell id="laneA_n1" value="步骤 1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#3B82F6;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneA"><mxGeometry x="114" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneA_n2" value="步骤 2" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#3B82F6;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneA"><mxGeometry x="284" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneA_n3" value="步骤 3" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#3B82F6;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneA"><mxGeometry x="454" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneA_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneA_n1" target="laneA_n2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="laneA_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneA_n2" target="laneA_n3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="laneB" value="角色 B" style="swimlane;horizontal=1;startSize=90;fillColor=#E6F6F4;strokeColor=#0D9488;fontColor=#115E59;fontStyle=1;fontSize=13;" vertex="1" parent="1"><mxGeometry x="40" y="206" width="900" height="130" as="geometry" /></mxCell>
+        <mxCell id="laneB_n1" value="步骤 1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#0D9488;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneB"><mxGeometry x="114" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneB_n2" value="步骤 2" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#0D9488;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneB"><mxGeometry x="284" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneB_n3" value="步骤 3" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#0D9488;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneB"><mxGeometry x="454" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneB_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneB_n1" target="laneB_n2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="laneB_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneB_n2" target="laneB_n3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="laneC" value="角色 C" style="swimlane;horizontal=1;startSize=90;fillColor=#F3F4F6;strokeColor=#6B7280;fontColor=#1F2937;fontStyle=1;fontSize=13;" vertex="1" parent="1"><mxGeometry x="40" y="352" width="900" height="130" as="geometry" /></mxCell>
+        <mxCell id="laneC_n1" value="步骤 1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#6B7280;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneC"><mxGeometry x="114" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneC_n2" value="步骤 2" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#6B7280;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneC"><mxGeometry x="284" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneC_n3" value="步骤 3" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#FFFFFF;strokeColor=#6B7280;fontColor=#1F2937;fontSize=12;" vertex="1" parent="laneC"><mxGeometry x="454" y="43" width="150" height="44" as="geometry" /></mxCell>
+        <mxCell id="laneC_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneC_n1" target="laneC_n2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="laneC_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="laneC_n2" target="laneC_n3"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
